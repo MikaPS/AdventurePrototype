@@ -92,20 +92,133 @@ class Demo2 extends AdventureScene {
     }
 }
 
+// LAB
 class Lab extends AdventureScene {
     constructor() {
         super("lab", "A lab");
     }
 
+    preload() {
+        this.load.path = './assets/lab/';
+        this.load.image('cabinet', 'cabinet.png');
+        this.load.image('bookcase', 'bookcase.png');
+        this.load.image('safe', 'safe.png');
+        this.load.image('table', 'table.png');
+        this.load.image('purpleholder', 'purpleholder.png');
+        this.load.image('blueholder', 'blueholder.png');
+        this.load.image('potion1', 'potion1.png');
+        this.load.image('potion2', 'potion2.png');
+        this.load.image('goldenkey', 'goldenkey.png');
+        this.load.image('rustykey', 'rustykey.png');
+        this.load.image('greenkey', 'greenkey.png');
+    }
+
     onEnter() {
-        let orb = this.add.text(this.w * 0.3, this.w * 0.3, "⚗️ orb")
-            .setFontSize(this.s * 2)
+        let cabinet = this.add.image(this.w*0.39, this.h*0.87, 'cabinet',)
+            .setScale(2)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
+            .on('pointerdown', () => {
+                this.noTouching(cabinet);
+            });
+        
+        let bookcase = this.add.image(this.w*0.63, this.h*0.73, 'bookcase',)
+            .setScale(0.9)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Intersting research, I wish I had time to explore that."))
+            .on('pointerdown', () => {
+                this.noTouching(bookcase);
+            });
+
+        let safe = this.add.image(this.w*0.4, this.h*0.25, 'safe',)
+            .setScale(1.2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Make sure you get the right key..."))
             .on('pointerdown', () => {
                 this.gotoScene('maze');
             });
+
+        let purpleholder = this.add.image(this.w*0.16, this.h*0.3, 'purpleholder',)
+            .setScale(1.2)
+
+        let blueholder = this.add.image(this.w*0.4, this.h*0.415, 'blueholder',)
+            .setScale(1.2)
+
+        let potion2 = this.add.image(this.w*0.34, this.h*0.7, 'potion2',)
+            .setScale(0.8)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("They sure are making something important here."))
+            .on('pointerdown', () => { this.noTouching(potion2); });
+        
+        let table = this.add.image(this.w*0.13, this.h*0.82, 'table',)
+            .setScale(1.7)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
+            .on('pointerdown', () => {
+                if (!this.hasItem("Potion")) {
+                    this.gotoScene('startup');
+                    this.itemAnimation(potion1);
+                }
+            });
+
+        let potion1 = this.add.image(this.w*0.13, this.h*0.7, 'potion1',)
+            .setScale(0.7)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
+            .on('pointerdown', () => {
+                if (!this.hasItem("Potion")) {
+                    this.gotoScene('startup');
+                    this.itemAnimation(potion1);
+                }
+            });
+
+        let goldenkey = this.add.image(this.w*0.45, this.h*0.71, 'goldenkey',)
+            .setScale(0.5)
+            .setAngle(90)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("A golden key! Maybe it’s lucky."))
+            .on('pointerdown', () => {
+                this.showMessage("It's just a regular key.");
+                this.gainItem('Golden key');
+                this.itemAnimation(goldenkey);
+            });
+
+        let rustykey = this.add.image(this.w*0.17, this.h*0.2, 'rustykey',)
+            .setScale(0.5)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("A rusty key. I wonder how long it waited here."))
+            .on('pointerdown', () => {
+                this.showMessage("The key is falling apart in your hands.");
+                this.gainItem('Rusty key');
+                this.itemAnimation(rustykey);
+            });
+        
+        let greenkey = this.add.image(this.w*0.65, this.h*0.52, 'greenkey',)
+            .setScale(0.5)
+            .setAngle(270)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("A weird key. Something about this one feels wrong."))
+            .on('pointerdown', () => {
+                this.showMessage("Yikes, it's slimy.");
+                this.gainItem('Green key');
+                this.itemAnimation(greenkey);
+            });
     }
+}
+
+class Startup extends AdventureScene {
+    constructor() {
+        super("startup", "Starting maze");
+    }
+
+    onEnter() {
+        this.addDescription("Click the green box to move to the maze. After seeing the maze, click it again to start. Good luck!");
+        this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.13, this.h*0.1, 0x00ff00)
+            .setInteractive()
+            .on("pointerover", () => this.showMessage("Are you ready?"))
+            .on("pointerdown", () => { this.gotoScene('maze') });
+        
+    }
+
 }
 
 class Maze extends AdventureScene {
@@ -115,11 +228,8 @@ class Maze extends AdventureScene {
     }
 
     onEnter() {
-        let defaultText = this.add.text(this.w*0.001, this.w*0.005, "  ")
-            .setFontSize(this.s * 70)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("hover over the path without touching the edges to get the item"))
-        
+        this.addDescription("hover over the path without touching the edges to get the item.");
+
         this.add.rectangle(this.w*0.1, this.h *0.25, this.w*0.4, this.h*0.1, 0x6666ff)
             .setInteractive()
             .on("pointerover", () => { this.startOver(); });
@@ -166,6 +276,7 @@ class Maze extends AdventureScene {
 
         // Start and end point
         // Instead of just count, need one count for end and one for beg to stop cheaters
+        // Also, when they fail only allow them to click the start over button
         this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.13, this.h*0.1, 0x00ff00)
             .setInteractive()
             .on("pointerdown", () => { this.count += 1; console.log(this.count); });
@@ -173,15 +284,11 @@ class Maze extends AdventureScene {
         this.add.rectangle(this.w*0.72, this.h *0.7, this.h*0.1, this.h*0.1, 0x00ff00)
             .setInteractive()
             .on("pointerdown", () => { this.count += 1; console.log(this.count); });  
-        
-
-        
-    
     }
 
     update() {
         if (this.count >= 2) {
-            console.log("here");
+            this.gainItem('Potion');
             this.gotoScene('lab');
         }
     }
@@ -221,7 +328,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Maze, Lab],
+    scene: [Lab, Startup, Maze],
+    // scene: [Startup],
     title: "Adventure Game",
 });
 

@@ -25,7 +25,11 @@ class AdventureScene extends Phaser.Scene {
             .setStyle({ fontSize: `${3 * this.s}px` })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
         
-        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
+        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.43)
+            .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
+            .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
+
+        this.descriptionBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.13)
             .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
 
@@ -60,6 +64,15 @@ class AdventureScene extends Phaser.Scene {
             alpha: { from: 1, to: 0 },
             easing: 'Quintic.in',
             duration: 4 * this.transitionDuration
+        });
+    }
+
+    addDescription(message) {
+        this.descriptionBox.setText(message);
+        this.tweens.add({
+            targets: this.messageBox,
+            alpha: { from: 1, to: 0 },
+            easing: 'Quintic.in',
         });
     }
 
@@ -149,17 +162,39 @@ class AdventureScene extends Phaser.Scene {
     }
 
     startOver() {
-        this.add.rectangle(this.w*0.4, this.h *0.5, this.w*0.4, this.h*0.1, 0xff0000)
-            .setInteractive()
-            .on("pointerover", () =>  this.showMessage("Starting Over"))
-            .on("pointerdown", () => {
-                this.gotoScene('maze');
-            });
+        this.gotoScene('startup')
+        // this.add.rectangle(this.w*0.4, this.h *0.5, this.w*0.4, this.h*0.1, 0xff0000)
+        //     .setInteractive()
+        //     .on("pointerover", () =>  this.showMessage("Starting Over"))
+        //     .on("pointerdown", () => {
+        //         this.gotoScene('maze');
+        //     });
         
-        let defaultText = this.add.text(this.w*0.4, this.h *0.5, "Start Over?")
-            .setFontSize(this.s*2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("Starting Over"))
+        // let defaultText = this.add.text(this.w*0.4, this.h *0.5, "Start Over?")
+        //     .setFontSize(this.s*2)
+        //     .setInteractive()
+        //     .on('pointerover', () => this.showMessage("Starting Over"))
+    }
 
+    itemAnimation(item) {
+        this.tweens.add({
+            targets: item,
+            y: `-=${2 * this.s}`,
+            alpha: { from: 1, to: 0 },
+            duration: 500,
+            onComplete: () => item.destroy()
+        });
+    }
+
+    noTouching(item) {
+        this.showMessage("No touching!");
+        this.tweens.add({
+            targets: item,
+            x: '+=' + this.s,
+            repeat: 2,
+            yoyo: true,
+            ease: 'Sine.inOut',
+            duration: 100
+        });
     }
 }
