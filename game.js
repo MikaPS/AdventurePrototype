@@ -298,15 +298,131 @@ class Maze extends AdventureScene {
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
+        this.count = 0;
     }
+    preload() {
+        this.load.path = './assets/intro/';
+        this.load.image('street', 'streetbg.png');
+        this.load.image('ghost', 'ghost.png');
+    }
+    
     create() {
-        this.add.text(50,50, "Adventure awaits!").setFontSize(50);
-        this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
-        this.input.on('pointerdown', () => {
-            this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('lab'));
+        // Walking down the street animation
+        let street = this.add.image(958, 230, 'street')
+            .setScale(2.07);
+        let street1 = this.add.image(-958, 230, 'street')
+            .setScale(2.07);
+
+        this.tweens.add({
+                targets: street,
+                x: 2950,
+                duration: 6200,
+                ease: "Linear",
+                repeat: -1,
+            });
+
+        this.tweens.add({
+                targets: street1,
+                x: 958,
+                duration: 6000,
+                ease: "Linear",
+                repeat: -1,
+            });
+
+        let ghost1 = this.add.image(1350, 930, "ghost");
+        let ghost2 = this.add.image(1750, 930, "ghost");
+
+        this.text1 = this.add.text(50,600, "I don’t understand why\npeople don’t believe me\nwhen I say I talk to ghosts!")
+            .setFontSize(50);
+
+        this.text2 = this.add.text(1450,600, "Yeah, it is\nhonestly\noffensive")
+            .setFontSize(50);
+
+        this.textObject = this.add.text(
+            205, //x
+            930,//y
+            "Click to Continue", //text
+            {
+                color: "#ffffff",
+                fontSize: 38,
+            } //style
+        );
+        this.textObject.setDepth(2);
+
+        this.add.rectangle(400, 950, 400, 100, 0x5A3A96)
+            .setInteractive()
+            .on("pointerdown", () => {
+                this.count += 1;
+                console.log(this.count);
+                if (this.count == 1) {
+                    
+                    this.text3 = this.add.text(50,600, "You are real, right?\nIf I can talk to you,\nyou have to exist")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    this.text4 = this.add.text(1000,600, "Of course we are!\nWe are friends")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    
+                    this.switchText(this.text1, this.text2, this.text3, this.text4);
+                }
+                if (this.count == 2) {
+                    this.text1 = this.add.text(50,600, "I will show them all!\nWith my machine, I will\nmake the whole world\nsee you.")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    this.text2 = this.add.text(1300,600, "It just sucks that\nyou are missing\na few items")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    
+                    this.switchText(this.text3, this.text4, this.text1, this.text2);
+                }
+                if (this.count == 3) {
+                    this.text3 = this.add.text(50,600, "I only need to visit\nthe house, lab,\nand the graveyard.\nWhere should I begin?")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    this.text4 = this.add.text(950,600, "I like the\nowner of the\nhouse!")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    this.text = this.add.text(1400,600, "The lab creeps\nme out!")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    this.tweens.add({
+                            targets: [this.text],
+                            alpha: 1,
+                            duration: 3000,
+                            delay: 3000,
+                            ease: "Linear",
+                    });
+                    this.switchText(this.text1, this.text2, this.text3, this.text4);
+                }
+                if (this.count >= 4) {
+                    this.scene.start('lab');
+                }
+
+            });
+
+    }
+
+    switchText(text1, text2, text3, text4) {
+        this.tweens.add({
+                targets: [text1, text2],
+                alpha: 0,
+                duration: 3000,
+                ease: "Linear",
+                onComplete: () => {
+                    text1.destroy();
+                    text2.destroy();
+                }
+        });
+
+        this.tweens.add({
+                targets: [text3, text4],
+                alpha: 1,
+                duration: 3000,
+                delay: 3000,
+                ease: "Linear",
         });
     }
+
 }
 
 class Outro extends Phaser.Scene {
@@ -328,8 +444,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Lab, Startup, Maze],
-    // scene: [Startup],
+    // scene: [Lab, Startup, Maze],
+    scene: [Intro, Lab],
     title: "Adventure Game",
 });
 
