@@ -92,6 +92,56 @@ class Demo2 extends AdventureScene {
     }
 }
 
+class Lab extends AdventureScene {
+    constructor() {
+        super("lab", "A lab");
+    }
+
+    onEnter() {
+        let orb = this.add.text(this.w * 0.3, this.w * 0.3, "⚗️ orb")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
+            .on('pointerdown', () => {
+                this.gotoScene('maze');
+            });
+    }
+}
+
+class Maze extends AdventureScene {
+    constructor() {
+        super("maze", "A secret maze");
+    }
+
+    onEnter() {
+        let defaultText = this.add.text(this.w*0.001, this.w*0.005, "  ")
+            .setFontSize(this.s * 70)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("hover over the path without touching the edges to get the item"))
+        
+        this.add.rectangle(this.w*0.1, this.h *0.25, this.w*0.4, this.h*0.1, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.3, this.h *0.15, this.h*0.1, this.h*0.3, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.45, this.h *0.05, this.h*0.45, this.h*0.1, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.6, this.h *0.3, this.h*0.1, this.h*0.6, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.66, this.h *0.6, this.h*0.316, this.h*0.1, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+    }
+}
+
+
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
@@ -101,7 +151,7 @@ class Intro extends Phaser.Scene {
         this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('demo1'));
+            this.time.delayedCall(1000, () => this.scene.start('lab'));
         });
     }
 }
@@ -125,7 +175,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Demo1, Demo2, Outro],
+    scene: [Maze],
     title: "Adventure Game",
 });
 

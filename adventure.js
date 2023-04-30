@@ -147,4 +147,19 @@ class AdventureScene extends Phaser.Scene {
     onEnter() {
         console.warn('This AdventureScene did not implement onEnter():', this.constructor.name);
     }
+
+    startOver() {
+        this.add.rectangle(this.w*0.4, this.h *0.5, this.w*0.4, this.h*0.1, 0xff0000)
+            .setInteractive()
+            .on("pointerover", () =>  this.showMessage("Starting Over"))
+            .on("pointerdown", () => {
+                this.gotoScene('maze');
+            });
+        
+        let defaultText = this.add.text(this.w*0.4, this.h *0.5, "Start Over?")
+            .setFontSize(this.s*2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Starting Over"))
+
+    }
 }
