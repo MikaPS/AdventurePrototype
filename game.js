@@ -425,14 +425,109 @@ class Intro extends Phaser.Scene {
 
 }
 
-class Outro extends Phaser.Scene {
+class GoodOutro extends Phaser.Scene {
     constructor() {
-        super('outro');
+        super('goodoutro');
+        this.count = 0;
     }
+    preload() {
+        this.load.path = './assets/intro/';
+        this.load.image('street', 'streetbg.png');
+        this.load.image('ghost', 'ghost.png');
+    }
+    
     create() {
-        this.add.text(50, 50, "That's all!").setFontSize(50);
-        this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
-        this.input.on('pointerdown', () => this.scene.start('intro'));
+        // Walking down the street animation
+        let street = this.add.image(2950, 230, 'street')
+            .setScale(2.07);
+        let street1 = this.add.image(958, 230, 'street')
+            .setScale(2.07);
+
+        this.tweens.add({
+                targets: street,
+                x: 958,
+                duration: 6200,
+                ease: "Linear",
+                repeat: -1,
+            });
+
+        this.tweens.add({
+                targets: street1,
+                x: -958,
+                duration: 6000,
+                ease: "Linear",
+                repeat: -1,
+            });
+
+        let ghost1 = this.add.image(1350, 930, "ghost");
+        let ghost2 = this.add.image(1750, 930, "ghost");
+
+        this.text1 = this.add.text(50,600, "I finally did it!\nAll of the hard work\nwasn’t in vain.")
+            .setFontSize(50);
+
+        this.text2 = this.add.text(1100,600, "I am proud\nof you")
+            .setFontSize(50);
+
+        this.textObject = this.add.text(
+            205, //x
+            930,//y
+            "Click to Continue", //text
+            {
+                color: "#ffffff",
+                fontSize: 38,
+            } //style
+        );
+        this.textObject.setDepth(2);
+
+        this.add.rectangle(400, 950, 400, 100, 0x5A3A96)
+            .setInteractive()
+            .on("pointerdown", () => {
+                this.count += 1;
+                console.log(this.count);
+                if (this.count == 1) {
+                    
+                    this.text3 = this.add.text(50,600, "Today, they will finally\nsee me as one of them.\nMy parents already\napologized for doubting\nme.")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    this.text4 = this.add.text(1300,600, "Now that they can\nsee me, I will\nget back at them for\nnot believing you")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    
+                    this.switchText(this.text1, this.text2, this.text3, this.text4);
+                }
+                if (this.count == 2) {
+                    this.text1 = this.add.text(50,600, "I am excited for\nwhat’s to come now\nthat ghosts and humans\ncan live together")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    this.text2 = this.add.text(1000,600, "I am sure it\nwill be great")
+                        .setFontSize(50)
+                        .setAlpha(0);
+                    
+                    this.switchText(this.text3, this.text4, this.text1, this.text2);
+                }
+            });
+
+    }
+
+    switchText(text1, text2, text3, text4) {
+        this.tweens.add({
+                targets: [text1, text2],
+                alpha: 0,
+                duration: 3000,
+                ease: "Linear",
+                onComplete: () => {
+                    text1.destroy();
+                    text2.destroy();
+                }
+        });
+
+        this.tweens.add({
+                targets: [text3, text4],
+                alpha: 1,
+                duration: 3000,
+                delay: 3000,
+                ease: "Linear",
+        });
     }
 }
 
@@ -445,7 +540,7 @@ const game = new Phaser.Game({
         height: 1080
     },
     // scene: [Lab, Startup, Maze],
-    scene: [Intro, Lab],
+    scene: [GoodOutro],
     title: "Adventure Game",
 });
 
