@@ -111,6 +111,7 @@ class Lab extends AdventureScene {
 class Maze extends AdventureScene {
     constructor() {
         super("maze", "A secret maze");
+        this.count = 0;
     }
 
     onEnter() {
@@ -138,6 +139,51 @@ class Maze extends AdventureScene {
         this.add.rectangle(this.w*0.66, this.h *0.6, this.h*0.316, this.h*0.1, 0x6666ff)
             .setInteractive()
             .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.1, this.h *0.7, this.h*0.1, this.h*0.6, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.23, this.h *0.45, this.h*0.56, this.h*0.1, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.4, this.h *0.375, this.h*0.1, this.h*0.25, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        this.add.rectangle(this.w*0.462, this.h *0.3, this.h*0.12, this.h*0.1, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+        
+        this.add.rectangle(this.w*0.5, this.h *0.5, this.h*0.1, this.h*0.5, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+        
+        this.add.rectangle(this.w*0.613, this.h *0.8, this.h*0.5, this.h*0.1, 0x6666ff)
+            .setInteractive()
+            .on("pointerover", () => { this.startOver(); });
+
+        // Start and end point
+        // Instead of just count, need one count for end and one for beg to stop cheaters
+        this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.13, this.h*0.1, 0x00ff00)
+            .setInteractive()
+            .on("pointerdown", () => { this.count += 1; console.log(this.count); });
+        
+        this.add.rectangle(this.w*0.72, this.h *0.7, this.h*0.1, this.h*0.1, 0x00ff00)
+            .setInteractive()
+            .on("pointerdown", () => { this.count += 1; console.log(this.count); });  
+        
+
+        
+    
+    }
+
+    update() {
+        if (this.count >= 2) {
+            console.log("here");
+            this.gotoScene('lab');
+        }
     }
 }
 
@@ -175,7 +221,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Maze],
+    scene: [Maze, Lab],
     title: "Adventure Game",
 });
 
