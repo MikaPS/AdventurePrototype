@@ -355,6 +355,68 @@ class MachineRoom extends AdventureScene {
     }
 }
 
+// GRAVEYARD
+class Graveyard extends AdventureScene {
+    constructor() {
+        super("graveyard", "A graveyard");
+    }
+
+    preload() {
+        this.load.path = './assets/graveyard/';
+        this.load.image('bone', 'bone.png');
+        this.load.image('grave', 'grave.png');
+        this.load.image('trees', 'trees.png');
+        this.load.image('trees2', 'trees2.png');
+    }
+
+    onEnter() {
+        let back = this.add.text(this.w*0.943, this.h*0.9, "Back")
+            .setFontSize(40)
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.showMessage("Going to MachineRoom.");
+                this.gotoScene("machineroom");
+            });
+
+        let bone = this.add.image(this.w*0.31, this.h*0.91, 'bone',)
+            .setDepth(2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
+            .on('pointerdown', () => {
+                this.showMessage("Nice! They keep their empty perfume bottles.");
+                this.gainItem('Perfume Bottle');
+                this.itemAnimation(bottledown);
+            });
+        
+        let grave1 = this.add.image(this.w*0.15, this.h*0.87, 'grave',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Gotta take care of yourself."))
+            .on('pointerdown', () => {
+                this.noTouching(bottles);
+            });
+
+        let grave2 = this.add.image(this.w*0.15, this.h*0.87, 'grave',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Gotta take care of yourself."))
+            .on('pointerdown', () => {
+                this.noTouching(bottles);
+            });
+
+        let trees = this.add.image(this.w*0.22, this.h*0.24, 'trees',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Just some trees"))
+            .on('pointerdown', () => {
+                this.noTouching(bottles);
+            });
+
+        let trees2 = this.add.image(this.w*0.6, this.h*0.25, 'trees2',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("How can they sleep with the lamp on?"))
+            .on('pointerdown', () => {
+                this.noTouching(lamp);
+            });
+    }
+}
 
 // HOUSE
 class House extends AdventureScene {
@@ -678,7 +740,7 @@ const game = new Phaser.Game({
         height: 1080
     },
     // scene: [Lab, Startup, Maze],
-    scene: [MachineRoom, House, Lab, Startup, Maze],
+    scene: [Graveyard, MachineRoom, House, Lab, Startup, Maze],
     title: "Adventure Game",
 });
 
