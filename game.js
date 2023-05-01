@@ -309,12 +309,13 @@ class MachineRoom extends AdventureScene {
     }
 
     preload() {
-        this.load.image('fan', './assets/house/fan.png');
+        this.load.image('grave', './assets/graveyard/grave.png');
         this.load.image('lamp', './assets/house/lamp.png');
         this.load.image('potion', './assets/lab/potion1.png');
     }
 
     onEnter() {
+        this.addDescription("Visit the following places and get the items listed when hovering over them.");
         // Progress bar for machine
         let complete = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*0.7, this.h*0.07, 0x00ff00)
             .setInteractive()
@@ -338,8 +339,8 @@ class MachineRoom extends AdventureScene {
                 this.gotoScene("lab");
             });
 
-        let graveyard = this.add.image(this.w*0.62, this.h*0.78, 'fan',)
-            .setScale(1.8)
+        let graveyard = this.add.image(this.w*0.62, this.h*0.78, 'grave',)
+            .setScale(1.5)
             .setInteractive()
             .on('pointerover', () => this.showMessage("Bones to get the physical aspect of the ghosts. Old flower to show that others care about the ghosts."))
             .on('pointerdown', () => {
@@ -350,7 +351,7 @@ class MachineRoom extends AdventureScene {
     }
 
     update() {
-        let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/10), this.h*0.07, 0xff0000);
+        let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/12.8), this.h*0.07, 0xff0000);
 
     }
 }

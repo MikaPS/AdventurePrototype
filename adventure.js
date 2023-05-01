@@ -25,7 +25,7 @@ class AdventureScene extends Phaser.Scene {
             .setStyle({ fontSize: `${3 * this.s}px` })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
         
-        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.43)
+        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
             .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
 
@@ -33,7 +33,7 @@ class AdventureScene extends Phaser.Scene {
             .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
 
-        this.inventoryBanner = this.add.text(this.w * 0.75 + this.s, this.h * 0.66)
+        this.inventoryBanner = this.add.text(this.w * 0.75 + this.s, this.h * 0.53)
             .setStyle({ fontSize: `${2 * this.s}px` })
             .setText("Inventory")
             .setAlpha(0);
@@ -94,7 +94,7 @@ class AdventureScene extends Phaser.Scene {
             this.inventoryTexts.forEach((t) => t.destroy());
         }
         this.inventoryTexts = [];
-        let h = this.h * 0.66 + 3 * this.s;
+        let h = this.h * 0.53 + 3 * this.s;
         this.inventory.forEach((e, i) => {
             let text = this.add.text(this.w * 0.75 + 2 * this.s, h, e)
                 .setStyle({ fontSize: `${1.5 * this.s}px` })
