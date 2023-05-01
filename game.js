@@ -114,6 +114,14 @@ class Lab extends AdventureScene {
     }
 
     onEnter() {
+        let back = this.add.text(this.w*0.943, this.h*0.9, "Back")
+        .setFontSize(40)
+        .setInteractive()
+        .on('pointerdown', () => {
+            this.showMessage("Going to MachineRoom.");
+            this.gotoScene("machineroom");
+        });
+
         let cabinet = this.add.image(this.w*0.39, this.h*0.87, 'cabinet',)
             .setScale(2)
             .setInteractive()
@@ -294,6 +302,59 @@ class Maze extends AdventureScene {
     }
 }
 
+// PORTAL / MAIN HUB
+class MachineRoom extends AdventureScene {
+    constructor() {
+        super("machineroom", "A machine");
+    }
+
+    preload() {
+        this.load.image('fan', './assets/house/fan.png');
+        this.load.image('lamp', './assets/house/lamp.png');
+        this.load.image('potion', './assets/lab/potion1.png');
+    }
+
+    onEnter() {
+        // Progress bar for machine
+        let complete = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*0.7, this.h*0.07, 0x00ff00)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Shows how close you are to finishing the machine!."))
+
+        let house = this.add.image(this.w*0.1, this.h*0.8, 'lamp',)
+            .setScale(2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("An empty bottle represents something that is gone. Fan since ghosts float around."))
+            .on('pointerdown', () => {
+                this.showMessage("Going to House.");
+                this.gotoScene("house");
+            });
+
+        let lab = this.add.image(this.w*0.34, this.h*0.79, 'potion',)
+            .setScale(1.8)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Unidentifiable item locked in a safe has to be important. Radioactive material to power the machine."))
+            .on('pointerdown', () => {
+                this.showMessage("Going to Lab.");
+                this.gotoScene("lab");
+            });
+
+        let graveyard = this.add.image(this.w*0.62, this.h*0.78, 'fan',)
+            .setScale(1.8)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Bones to get the physical aspect of the ghosts. Old flower to show that others care about the ghosts."))
+            .on('pointerdown', () => {
+                this.showMessage("Going to Graveyard.");
+                this.gotoScene("graveyard");
+            });
+
+    }
+
+    update() {
+        let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/10), this.h*0.07, 0xff0000);
+
+    }
+}
+
 
 // HOUSE
 class House extends AdventureScene {
@@ -308,9 +369,18 @@ class House extends AdventureScene {
         this.load.image('fan', 'fan.png');
         this.load.image('lamp', 'lamp.png');
         this.load.image('tv', 'tv.png');
+        this.load.image('couch', 'couch.png');
     }
 
     onEnter() {
+        let back = this.add.text(this.w*0.943, this.h*0.9, "Back")
+            .setFontSize(40)
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.showMessage("Going to MachineRoom.");
+                this.gotoScene("machineroom");
+            });
+
         let bottledown = this.add.image(this.w*0.31, this.h*0.91, 'bottledown',)
             .setDepth(2)
             .setInteractive()
@@ -328,12 +398,14 @@ class House extends AdventureScene {
                 this.noTouching(bottles);
             });
 
-        let fan = this.add.image(this.w*0.2, this.h*0.29, 'fan',)
+        let fan = this.add.image(this.w*0.16, this.h*0.29, 'fan',)
             .setScale(1.2)
             .setInteractive()
             .on('pointerover', () => this.showMessage("It’s so hot, you can’t sleep without air conditioning"))
             .on('pointerdown', () => {
-                this.noTouching(fan);
+                this.showMessage("You got the fan.");
+                this.gainItem('Fan');
+                this.itemAnimation(fan);
             });
 
         let lamp = this.add.image(this.w*0.66, this.h*0.3, 'lamp',)
@@ -349,6 +421,13 @@ class House extends AdventureScene {
             .on('pointerover', () => this.showMessage("They are watching a good room com."))
             .on('pointerdown', () => {
                 this.noTouching(tv);
+            });
+        
+        let couch = this.add.image(this.w*0.41, this.h*0.26, 'couch',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Be quick! They shouldn’t wake up."))
+            .on('pointerdown', () => {
+                this.noTouching(couch);
             });
     }
 }
@@ -599,7 +678,7 @@ const game = new Phaser.Game({
         height: 1080
     },
     // scene: [Lab, Startup, Maze],
-    scene: [House],
+    scene: [MachineRoom, House, Lab, Startup, Maze],
     title: "Adventure Game",
 });
 
