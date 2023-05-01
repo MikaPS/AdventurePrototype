@@ -295,6 +295,65 @@ class Maze extends AdventureScene {
 }
 
 
+// HOUSE
+class House extends AdventureScene {
+    constructor() {
+        super("house", "A house");
+    }
+
+    preload() {
+        this.load.path = './assets/house/';
+        this.load.image('bottledown', 'bottledown.png');
+        this.load.image('bottles', 'bottles.png');
+        this.load.image('fan', 'fan.png');
+        this.load.image('lamp', 'lamp.png');
+        this.load.image('tv', 'tv.png');
+    }
+
+    onEnter() {
+        let bottledown = this.add.image(this.w*0.31, this.h*0.91, 'bottledown',)
+            .setDepth(2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
+            .on('pointerdown', () => {
+                this.showMessage("Nice! They keep their empty perfume bottles.");
+                this.gainItem('Perfume Bottle');
+                this.itemAnimation(bottledown);
+            });
+        
+        let bottles = this.add.image(this.w*0.15, this.h*0.87, 'bottles',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Gotta take care of yourself."))
+            .on('pointerdown', () => {
+                this.noTouching(bottles);
+            });
+
+        let fan = this.add.image(this.w*0.2, this.h*0.29, 'fan',)
+            .setScale(1.2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("It’s so hot, you can’t sleep without air conditioning"))
+            .on('pointerdown', () => {
+                this.noTouching(fan);
+            });
+
+        let lamp = this.add.image(this.w*0.66, this.h*0.3, 'lamp',)
+            .setScale(1.45)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("How can they sleep with the lamp on?"))
+            .on('pointerdown', () => {
+                this.noTouching(lamp);
+            });
+
+        let tv = this.add.image(this.w*0.58, this.h*0.8, 'tv',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("They are watching a good room com."))
+            .on('pointerdown', () => {
+                this.noTouching(tv);
+            });
+    }
+}
+
+// INTRO + OUTRO
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
@@ -540,7 +599,7 @@ const game = new Phaser.Game({
         height: 1080
     },
     // scene: [Lab, Startup, Maze],
-    scene: [GoodOutro],
+    scene: [House],
     title: "Adventure Game",
 });
 
