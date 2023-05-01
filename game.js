@@ -367,6 +367,7 @@ class Graveyard extends AdventureScene {
         this.load.image('grave', 'grave.png');
         this.load.image('trees', 'trees.png');
         this.load.image('trees2', 'trees2.png');
+        this.load.image('flower', 'flower.png');
     }
 
     onEnter() {
@@ -378,28 +379,74 @@ class Graveyard extends AdventureScene {
                 this.gotoScene("machineroom");
             });
 
-        let bone = this.add.image(this.w*0.31, this.h*0.91, 'bone',)
+        let bone = this.add.image(this.w*0.08, this.h*0.91, 'bone',)
             .setDepth(2)
+            .setAlpha(0)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
+            .on('pointerdown', () => {
+                this.showMessage("You are basically a pro grave robber.");
+                this.gainItem('Bone1');
+                this.itemAnimation(bone);
+            });
+        let bone2 = this.add.image(this.w*0.48, this.h*0.91, 'bone',)
+            .setDepth(2)
+            .setAlpha(0)
             .setInteractive()
             .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
             .on('pointerdown', () => {
                 this.showMessage("Nice! They keep their empty perfume bottles.");
-                this.gainItem('Perfume Bottle');
-                this.itemAnimation(bottledown);
+                this.gainItem('Bone2');
+                this.itemAnimation(bone2);
             });
-        
-        let grave1 = this.add.image(this.w*0.15, this.h*0.87, 'grave',)
+        let count1 = 0;
+        let grave1 = this.add.image(this.w*0.07, this.h*0.67, 'grave',)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("Gotta take care of yourself."))
+            .on('pointerover', () => this.showMessage("Need to dig around to get the bones."))
+            .on('pointerdown', () => {
+                count1 += 1;
+                this.showMessage("Maybe some more clicks.");
+                if (count1 == 4) {
+                    bone.setAlpha(1);
+                }
+                
+            });
+
+        let grave2 = this.add.image(this.w*0.27, this.h*0.67, 'grave',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("The ghosts that you see are the ones who died as warriors."))
+            .on('pointerdown', () => {
+                this.noTouching(grave2);
+            });
+
+        
+        let count2 = 0;
+        let grave3 = this.add.image(this.w*0.47, this.h*0.67, 'grave',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Need to dig around to get the bones."))
+            .on('pointerdown', () => {
+                count2 += 1;
+                this.showMessage("Maybe some more clicks.");
+                if (count2 == 7) {
+                    bone2.setAlpha(1);
+                }
+            });
+
+        let grave4 = this.add.image(this.w*0.67, this.h*0.67, 'grave',)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("The ghosts might resent you. Be careful."))
             .on('pointerdown', () => {
                 this.noTouching(bottles);
             });
 
-        let grave2 = this.add.image(this.w*0.15, this.h*0.87, 'grave',)
+        let flower = this.add.image(this.w*0.57, this.h*0.86, 'flower',)
+            .setScale(0.5)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("Gotta take care of yourself."))
+            .on('pointerover', () => this.showMessage("Someone left it there for them."))
             .on('pointerdown', () => {
-                this.noTouching(bottles);
+                this.showMessage("You got the flower.");
+                this.gainItem('Flower');
+                this.itemAnimation(flower);
             });
 
         let trees = this.add.image(this.w*0.22, this.h*0.24, 'trees',)
