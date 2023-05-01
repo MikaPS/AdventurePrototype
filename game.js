@@ -352,6 +352,9 @@ class MachineRoom extends AdventureScene {
 
     update() {
         let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/12.8), this.h*0.07, 0xff0000);
+        if (this.inventory.length == 9) {
+            this.gotoScene("goodoutro");
+        }
 
     }
 }
@@ -686,15 +689,15 @@ class GoodOutro extends Phaser.Scene {
     
     create() {
         // Walking down the street animation
-        let street = this.add.image(2950, 230, 'street')
+        let street = this.add.image(2900, 230, 'street')
             .setScale(2.07);
-        let street1 = this.add.image(958, 230, 'street')
+        let street1 = this.add.image(2900, 230, 'street')
             .setScale(2.07);
 
         this.tweens.add({
                 targets: street,
-                x: 958,
-                duration: 6200,
+                x: -958,
+                duration: 7200,
                 ease: "Linear",
                 repeat: -1,
             });
@@ -702,13 +705,14 @@ class GoodOutro extends Phaser.Scene {
         this.tweens.add({
                 targets: street1,
                 x: -958,
-                duration: 6000,
+                duration: 7200,
+                delay: 3595,
                 ease: "Linear",
                 repeat: -1,
             });
 
-        let ghost1 = this.add.image(1350, 930, "ghost");
-        let ghost2 = this.add.image(1750, 930, "ghost");
+        let ghost1 = this.add.image(1350, 910, "ghost");
+        let ghost2 = this.add.image(1750, 910, "ghost");
 
         this.text1 = this.add.text(50,600, "I finally did it!\nAll of the hard work\nwasn’t in vain.")
             .setFontSize(50);
@@ -777,6 +781,10 @@ class GoodOutro extends Phaser.Scene {
                 ease: "Linear",
         });
     }
+
+    update() {
+
+    }
 }
 
 
@@ -787,8 +795,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    // scene: [Lab, Startup, Maze],
-    scene: [Graveyard, MachineRoom, House, Lab, Startup, Maze],
+    scene: [GoodOutro],
+    // scene: [MachineRoom, House, Lab, Startup, Maze, Graveyard, GoodOutro],
     title: "Adventure Game",
 });
 
