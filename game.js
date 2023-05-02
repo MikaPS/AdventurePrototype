@@ -1,97 +1,3 @@
-class Demo1 extends AdventureScene {
-    constructor() {
-        super("demo1", "First Room");
-    }
-
-    onEnter() {
-
-        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("Metal, bent."))
-            .on('pointerdown', () => {
-                this.showMessage("No touching!");
-                this.tweens.add({
-                    targets: clip,
-                    x: '+=' + this.s,
-                    repeat: 2,
-                    yoyo: true,
-                    ease: 'Sine.inOut',
-                    duration: 100
-                });
-            });
-
-        let key = this.add.text(this.w * 0.5, this.w * 0.1, "🔑 key")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("It's a nice key.")
-            })
-            .on('pointerdown', () => {
-                this.showMessage("You pick up the key.");
-                this.gainItem('key');
-                this.tweens.add({
-                    targets: key,
-                    y: `-=${2 * this.s}`,
-                    alpha: { from: 1, to: 0 },
-                    duration: 500,
-                    onComplete: () => key.destroy()
-                });
-            })
-
-        let door = this.add.text(this.w * 0.1, this.w * 0.15, "🚪 locked door")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                if (this.hasItem("key")) {
-                    this.showMessage("You've got the key for this door.");
-                } else {
-                    this.showMessage("It's locked. Can you find a key?");
-                }
-            })
-            .on('pointerdown', () => {
-                if (this.hasItem("key")) {
-                    this.loseItem("key");
-                    this.showMessage("*squeak*");
-                    door.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
-                }
-            })
-
-    }
-}
-
-class Demo2 extends AdventureScene {
-    constructor() {
-        super("demo2", "The second room has a long name (it truly does).");
-    }
-    onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('demo1');
-            });
-
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
-            })
-            .on('pointerdown', () => this.gotoScene('outro'));
-    }
-}
-
 // LAB
 class Lab extends AdventureScene {
     constructor() {
@@ -135,14 +41,6 @@ class Lab extends AdventureScene {
             .on('pointerover', () => this.showMessage("Intersting research, I wish I had time to explore that."))
             .on('pointerdown', () => {
                 this.noTouching(bookcase);
-            });
-
-        let safe = this.add.image(this.w*0.4, this.h*0.25, 'safe',)
-            .setScale(1.2)
-            .setInteractive()
-            .on('pointerover', () => this.showMessage("Make sure you get the right key..."))
-            .on('pointerdown', () => {
-                this.gotoScene('maze');
             });
 
         let purpleholder = this.add.image(this.w*0.16, this.h*0.3, 'purpleholder',)
@@ -210,6 +108,22 @@ class Lab extends AdventureScene {
                 this.gainItem('Green key');
                 this.itemAnimation(greenkey);
             });
+
+        let safe = this.add.image(this.w*0.4, this.h*0.25, 'safe',)
+            .setScale(1.2)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Make sure you get the right key..."))
+            .on('pointerdown', () => {
+                if (this.hasItem("Green key") && this.hasItem("Rusty key") && this.hasItem("Golden key")) {
+                    this.loseItem("Green key");
+                    this.loseItem("Rusty key");
+                    this.loseItem("Golden key");
+                    this.showMessage("Good job!");
+                    this.gainItem("Secret safe item");
+                } else {
+                    this.showMessage("Not enough keys...");
+                }
+            });
     }
 }
 
@@ -224,78 +138,119 @@ class Startup extends AdventureScene {
             .setInteractive()
             .on("pointerover", () => this.showMessage("Are you ready?"))
             .on("pointerdown", () => { this.gotoScene('maze') });
-        
-    }
 
+        this.add.rectangle(this.w*0.1, this.h *0.25, this.w*0.4, this.h*0.1, 0x000000)
+          
+        this.add.rectangle(this.w*0.3, this.h *0.15, this.h*0.1, this.h*0.3, 0x000000)
+            
+        this.add.rectangle(this.w*0.45, this.h *0.05, this.h*0.45, this.h*0.1, 0x000000)
+            
+        this.add.rectangle(this.w*0.6, this.h *0.3, this.h*0.1, this.h*0.6, 0x000000)
+           
+        this.add.rectangle(this.w*0.66, this.h *0.6, this.h*0.316, this.h*0.1, 0x000000)
+            
+        this.add.rectangle(this.w*0.1, this.h *0.7, this.h*0.1, this.h*0.6, 0x000000)
+            
+        this.add.rectangle(this.w*0.23, this.h *0.45, this.h*0.56, this.h*0.1, 0x000000)
+            
+        this.add.rectangle(this.w*0.4, this.h *0.375, this.h*0.1, this.h*0.25, 0x000000)
+            
+        this.add.rectangle(this.w*0.462, this.h *0.3, this.h*0.12, this.h*0.1, 0x000000)
+            
+        this.add.rectangle(this.w*0.5, this.h *0.5, this.h*0.1, this.h*0.5, 0x000000)
+            
+        this.add.rectangle(this.w*0.613, this.h *0.8, this.h*0.5, this.h*0.1, 0x000000)
+            
+        this.add.rectangle(this.w*0.23, this.h *0.82, this.h*0.1, this.h*0.36, 0x000000)
+            
+        this.add.rectangle(this.w*0.342, this.h *0.69, this.h*0.3, this.h*0.1, 0x000000)
+            
+        this.add.rectangle(this.w*0.4, this.h *0.82, this.h*0.1, this.h*0.36, 0x000000)
+    }
 }
 
 class Maze extends AdventureScene {
     constructor() {
         super("maze", "A secret maze");
-        this.count = 0;
+        this.countStart = 0;
+        this.countEnd = 0;
     }
 
     onEnter() {
-        this.addDescription("hover over the path without touching the edges to get the item.");
+        this.cameras.main.setBackgroundColor('#6666ff');
 
-        this.add.rectangle(this.w*0.1, this.h *0.25, this.w*0.4, this.h*0.1, 0x6666ff)
-            .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+        this.addDescription("Click both of the green square to complete the maze. But, make sure to not touch the edges.");
 
-        this.add.rectangle(this.w*0.3, this.h *0.15, this.h*0.1, this.h*0.3, 0x6666ff)
+        this.add.rectangle(this.w*0.1, this.h *0.25, this.w*0.4, this.h*0.1, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
-        this.add.rectangle(this.w*0.45, this.h *0.05, this.h*0.45, this.h*0.1, 0x6666ff)
+        this.add.rectangle(this.w*0.3, this.h *0.15, this.h*0.1, this.h*0.3, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
-        this.add.rectangle(this.w*0.6, this.h *0.3, this.h*0.1, this.h*0.6, 0x6666ff)
+        this.add.rectangle(this.w*0.45, this.h *0.05, this.h*0.45, this.h*0.1, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
-        this.add.rectangle(this.w*0.66, this.h *0.6, this.h*0.316, this.h*0.1, 0x6666ff)
+        this.add.rectangle(this.w*0.6, this.h *0.3, this.h*0.1, this.h*0.6, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
-        this.add.rectangle(this.w*0.1, this.h *0.7, this.h*0.1, this.h*0.6, 0x6666ff)
+        this.add.rectangle(this.w*0.66, this.h *0.6, this.h*0.316, this.h*0.1, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
-        this.add.rectangle(this.w*0.23, this.h *0.45, this.h*0.56, this.h*0.1, 0x6666ff)
+        this.add.rectangle(this.w*0.1, this.h *0.7, this.h*0.1, this.h*0.6, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
-        this.add.rectangle(this.w*0.4, this.h *0.375, this.h*0.1, this.h*0.25, 0x6666ff)
+        this.add.rectangle(this.w*0.23, this.h *0.45, this.h*0.56, this.h*0.1, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
-        this.add.rectangle(this.w*0.462, this.h *0.3, this.h*0.12, this.h*0.1, 0x6666ff)
+        this.add.rectangle(this.w*0.4, this.h *0.375, this.h*0.1, this.h*0.25, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
+
+        this.add.rectangle(this.w*0.462, this.h *0.3, this.h*0.12, this.h*0.1, 0x000000)
+            .setInteractive()
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
         
-        this.add.rectangle(this.w*0.5, this.h *0.5, this.h*0.1, this.h*0.5, 0x6666ff)
+        this.add.rectangle(this.w*0.5, this.h *0.5, this.h*0.1, this.h*0.5, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
         
-        this.add.rectangle(this.w*0.613, this.h *0.8, this.h*0.5, this.h*0.1, 0x6666ff)
+        this.add.rectangle(this.w*0.613, this.h *0.8, this.h*0.5, this.h*0.1, 0x000000)
             .setInteractive()
-            .on("pointerover", () => { this.startOver(); });
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
+
+        this.add.rectangle(this.w*0.23, this.h *0.82, this.h*0.1, this.h*0.36, 0x000000)
+            .setInteractive()
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
+
+        this.add.rectangle(this.w*0.342, this.h *0.69, this.h*0.3, this.h*0.1, 0x000000)
+            .setInteractive()
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
+
+        this.add.rectangle(this.w*0.4, this.h *0.82, this.h*0.1, this.h*0.36, 0x000000)
+            .setInteractive()
+            .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         // Start and end point
         // Instead of just count, need one count for end and one for beg to stop cheaters
         // Also, when they fail only allow them to click the start over button
         this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.13, this.h*0.1, 0x00ff00)
             .setInteractive()
-            .on("pointerdown", () => { this.count += 1; console.log(this.count); });
+            .on("pointerdown", () => { this.countStart += 1; });
         
         this.add.rectangle(this.w*0.72, this.h *0.7, this.h*0.1, this.h*0.1, 0x00ff00)
             .setInteractive()
-            .on("pointerdown", () => { this.count += 1; console.log(this.count); });  
+            .on("pointerdown", () => { this.countEnd += 1; });  
     }
 
     update() {
-        if (this.count >= 2) {
+        if (this.countStart >= 1 && this.countEnd >= 1) {
             this.gainItem('Potion');
             this.gotoScene('lab');
         }
@@ -351,8 +306,8 @@ class MachineRoom extends AdventureScene {
     }
 
     update() {
-        let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/12.8), this.h*0.07, 0xff0000);
-        if (this.inventory.length == 9) {
+        let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/10), this.h*0.07, 0xff0000);
+        if (this.hasItem("Secret safe item") && this.inventory.length == 7) {
             this.gotoScene("goodoutro");
         }
 
@@ -795,8 +750,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [GoodOutro],
-    // scene: [MachineRoom, House, Lab, Startup, Maze, Graveyard, GoodOutro],
+    // scene: [MachineRoom],
+    scene: [Intro, MachineRoom, House, Lab, Startup, Maze, Graveyard, GoodOutro],
     title: "Adventure Game",
 });
 
