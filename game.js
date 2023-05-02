@@ -356,9 +356,11 @@ class Graveyard extends AdventureScene {
             .setInteractive()
             .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
             .on('pointerdown', () => {
+                if (bone.alpha == 1) {
                 this.showMessage("You are basically a pro grave robber.");
                 this.gainItem('Bone1');
                 this.itemAnimation(bone);
+                }
             });
         let bone2 = this.add.image(this.w*0.48, this.h*0.91, 'bone',)
             .setDepth(2)
@@ -366,9 +368,11 @@ class Graveyard extends AdventureScene {
             .setInteractive()
             .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
             .on('pointerdown', () => {
-                this.showMessage("Nice! They keep their empty perfume bottles.");
+                if (bone2.alpha == 1) {
+                this.showMessage("You are basically a pro grave robber.");
                 this.gainItem('Bone2');
                 this.itemAnimation(bone2);
+                }
             });
         let count1 = 0;
         let grave1 = this.add.image(this.w*0.07, this.h*0.67, 'grave',)
