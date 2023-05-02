@@ -267,14 +267,24 @@ class MachineRoom extends AdventureScene {
         this.load.image('grave', './assets/graveyard/grave.png');
         this.load.image('lamp', './assets/house/lamp.png');
         this.load.image('potion', './assets/lab/potion1.png');
+        this.load.image('robot', './assets/robot.png');
+
     }
 
     onEnter() {
         this.addDescription("Visit the following places and get the items listed when hovering over them.");
         // Progress bar for machine
-        let complete = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*0.7, this.h*0.07, 0x00ff00)
+        let complete = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*0.7, this.h*0.07, 0x80B192)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("Shows how close you are to finishing the machine!."))
+            .on('pointerover', () => this.showMessage("Shows how close you are to finishing the machine!"))
+
+        let robot = this.add.image(this.w*0.37, this.h*0.32, 'robot',)
+            .setScale(1.3)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("The machine is missing a few pieces.."))
+            .on('pointerdown', () => {
+                this.noTouching(robot);
+            });
 
         let house = this.add.image(this.w*0.1, this.h*0.8, 'lamp',)
             .setScale(2)
@@ -306,7 +316,7 @@ class MachineRoom extends AdventureScene {
     }
 
     update() {
-        let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/10), this.h*0.07, 0xff0000);
+        let progress = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*(this.inventory.length/10), this.h*0.07, 0xA1E887);
         if (this.hasItem("Secret safe item") && this.inventory.length == 7) {
             this.gotoScene("goodoutro");
         }
@@ -601,7 +611,7 @@ class Intro extends Phaser.Scene {
                     this.switchText(this.text1, this.text2, this.text3, this.text4);
                 }
                 if (this.count >= 4) {
-                    this.scene.start('lab');
+                    this.scene.start('machineroom');
                 }
 
             });
@@ -750,8 +760,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    // scene: [MachineRoom],
-    scene: [Intro, MachineRoom, House, Lab, Startup, Maze, Graveyard, GoodOutro],
+    scene: [MachineRoom],
+    // scene: [Intro, MachineRoom, House, Lab, Startup, Maze, Graveyard, GoodOutro],
     title: "Adventure Game",
 });
 
