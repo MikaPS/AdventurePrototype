@@ -22,7 +22,7 @@ class Lab extends AdventureScene {
     onEnter() {
         let back = this.add.text(this.w*0.943, this.h*0.9, "Back")
         .setFontSize(40)
-        .setInteractive()
+        .setInteractive({useHandCursor: true})
         .on('pointerdown', () => {
             this.showMessage("Going to MachineRoom.");
             this.gotoScene("machineroom");
@@ -30,14 +30,14 @@ class Lab extends AdventureScene {
 
         let cabinet = this.add.image(this.w*0.39, this.h*0.87, 'cabinet',)
             .setScale(2)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
                 this.noTouching(cabinet);
             });
         
         let bookcase = this.add.image(this.w*0.63, this.h*0.73, 'bookcase',)
             .setScale(0.9)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Intersting research, I wish I had time to explore that."))
             .on('pointerdown', () => {
                 this.noTouching(bookcase);
@@ -51,13 +51,13 @@ class Lab extends AdventureScene {
 
         let potion2 = this.add.image(this.w*0.34, this.h*0.7, 'potion2',)
             .setScale(0.8)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("They sure are making something important here."))
             .on('pointerdown', () => { this.noTouching(potion2); });
         
         let table = this.add.image(this.w*0.13, this.h*0.82, 'table',)
             .setScale(1.7)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
             .on('pointerdown', () => {
                 if (!this.hasItem("Radioactive material")) {
@@ -68,7 +68,7 @@ class Lab extends AdventureScene {
 
         let potion1 = this.add.image(this.w*0.13, this.h*0.7, 'potion1',)
             .setScale(0.7)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
             .on('pointerdown', () => {
                 if (!this.hasItem("Radioactive material")) {
@@ -82,7 +82,7 @@ class Lab extends AdventureScene {
         let goldenkey = this.add.image(this.w*0.45, this.h*0.71, 'goldenkey',)
             .setScale(0.5)
             .setAngle(90)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("A golden key! Maybe it’s lucky."))
             .on('pointerdown', () => {
                 this.showMessage("It's just a regular key.");
@@ -92,7 +92,7 @@ class Lab extends AdventureScene {
 
         let rustykey = this.add.image(this.w*0.17, this.h*0.2, 'rustykey',)
             .setScale(0.5)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("A rusty key. I wonder how long it waited here."))
             .on('pointerdown', () => {
                 this.showMessage("The key is falling apart in your hands.");
@@ -103,7 +103,7 @@ class Lab extends AdventureScene {
         let greenkey = this.add.image(this.w*0.65, this.h*0.52, 'greenkey',)
             .setScale(0.5)
             .setAngle(270)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("A weird key. Something about this one feels wrong."))
             .on('pointerdown', () => {
                 this.showMessage("Yikes, it's slimy.");
@@ -113,7 +113,7 @@ class Lab extends AdventureScene {
 
         let safe = this.add.image(this.w*0.4, this.h*0.25, 'safe',)
             .setScale(1.2)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Make sure you get the right key..."))
             .on('pointerdown', () => {
                 if (this.hasItem("Green key") && this.hasItem("Rusty key") && this.hasItem("Golden key")) {
@@ -136,8 +136,8 @@ class Startup extends AdventureScene {
 
     onEnter() {
         this.addDescription("Click the green box to move to the maze. After seeing the maze, click it again to start. Good luck!");
-        this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.13, this.h*0.1, 0x00ff00)
-            .setInteractive()
+        this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.10, this.h*0.1, 0x00ff00)
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => this.showMessage("Are you ready?"))
             .on("pointerdown", () => { this.gotoScene('maze') });
 
@@ -181,73 +181,73 @@ class Maze extends AdventureScene {
     onEnter() {
         this.cameras.main.setBackgroundColor('#6666ff');
 
-        this.addDescription("Click both of the green square to complete the maze. But, make sure to not touch the edges.");
+        this.addDescription("Click both of the green square to complete the maze. But, make sure to stay on the blue path.");
 
         this.add.rectangle(this.w*0.1, this.h *0.25, this.w*0.4, this.h*0.1, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.3, this.h *0.15, this.h*0.1, this.h*0.3, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.45, this.h *0.05, this.h*0.45, this.h*0.1, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.6, this.h *0.3, this.h*0.1, this.h*0.6, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.66, this.h *0.6, this.h*0.316, this.h*0.1, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.1, this.h *0.7, this.h*0.1, this.h*0.6, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.23, this.h *0.45, this.h*0.56, this.h*0.1, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.4, this.h *0.375, this.h*0.1, this.h*0.25, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.462, this.h *0.3, this.h*0.12, this.h*0.1, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
         
         this.add.rectangle(this.w*0.5, this.h *0.5, this.h*0.1, this.h*0.5, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
         
         this.add.rectangle(this.w*0.613, this.h *0.8, this.h*0.5, this.h*0.1, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.23, this.h *0.82, this.h*0.1, this.h*0.36, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.342, this.h *0.69, this.h*0.3, this.h*0.1, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         this.add.rectangle(this.w*0.4, this.h *0.82, this.h*0.1, this.h*0.36, 0x000000)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerover", () => { this.showMessage("You touched an edge. Starting over"); this.startOver(); });
 
         // Start and end point
         // Instead of just count, need one count for end and one for beg to stop cheaters
         // Also, when they fail only allow them to click the start over button
-        this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.13, this.h*0.1, 0x00ff00)
-            .setInteractive()
+        this.add.rectangle(this.w*0.036, this.h *0.95, this.h*0.10, this.h*0.1, 0x00ff00)
+            .setInteractive({useHandCursor: true})
             .on("pointerdown", () => { this.countStart += 1; });
         
-        this.add.rectangle(this.w*0.72, this.h *0.7, this.h*0.1, this.h*0.1, 0x00ff00)
-            .setInteractive()
+        this.add.rectangle(this.w*0.72, this.h *0.7, this.h*0.1, this.h*0.08, 0x00ff00)
+            .setInteractive({useHandCursor: true})
             .on("pointerdown", () => { this.countEnd += 1; });  
     }
 
@@ -277,12 +277,12 @@ class MachineRoom extends AdventureScene {
         this.addDescription("Visit the following places and get the items listed when hovering over them.");
         // Progress bar for machine
         let complete = this.add.rectangle(this.w*0.375, this.h*0.07, this.w*0.7, this.h*0.07, 0x80B192)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Shows how close you are to finishing the machine!"))
 
         let robot = this.add.image(this.w*0.37, this.h*0.32, 'robot',)
             .setScale(1.3)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("The machine is missing a few pieces.."))
             .on('pointerdown', () => {
                 this.noTouching(robot);
@@ -290,7 +290,7 @@ class MachineRoom extends AdventureScene {
 
         let house = this.add.image(this.w*0.1, this.h*0.8, 'lamp',)
             .setScale(2)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("An *empty bottle* represents something that is gone. A *Fan* since ghosts float around."))
             .on('pointerdown', () => {
                 this.showMessage("Going to House.");
@@ -299,7 +299,7 @@ class MachineRoom extends AdventureScene {
 
         let lab = this.add.image(this.w*0.34, this.h*0.79, 'potion',)
             .setScale(1.8)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Unidentifiable item locked in a *safe* has to be important. *Radioactive material* to power the machine."))
             .on('pointerdown', () => {
                 this.showMessage("Going to Lab.");
@@ -308,7 +308,7 @@ class MachineRoom extends AdventureScene {
 
         let graveyard = this.add.image(this.w*0.62, this.h*0.78, 'grave',)
             .setScale(1.5)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("*Bones* to get the physical aspect of the ghosts. *Old flower* to show that others care about the ghosts."))
             .on('pointerdown', () => {
                 this.showMessage("Going to Graveyard.");
@@ -344,7 +344,7 @@ class Graveyard extends AdventureScene {
     onEnter() {
         let back = this.add.text(this.w*0.943, this.h*0.9, "Back")
             .setFontSize(40)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
                 this.showMessage("Going to MachineRoom.");
                 this.gotoScene("machineroom");
@@ -353,7 +353,7 @@ class Graveyard extends AdventureScene {
         let bone = this.add.image(this.w*0.08, this.h*0.91, 'bone',)
             .setDepth(2)
             .setAlpha(0)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
             .on('pointerdown', () => {
                 if (bone.alpha == 1) {
@@ -365,7 +365,7 @@ class Graveyard extends AdventureScene {
         let bone2 = this.add.image(this.w*0.48, this.h*0.91, 'bone',)
             .setDepth(2)
             .setAlpha(0)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
             .on('pointerdown', () => {
                 if (bone2.alpha == 1) {
@@ -376,7 +376,7 @@ class Graveyard extends AdventureScene {
             });
         let count1 = 0;
         let grave1 = this.add.image(this.w*0.07, this.h*0.67, 'grave',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Need to dig around to get the bones."))
             .on('pointerdown', () => {
                 count1 += 1;
@@ -388,7 +388,7 @@ class Graveyard extends AdventureScene {
             });
 
         let grave2 = this.add.image(this.w*0.27, this.h*0.67, 'grave',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("The ghosts that you see are the ones who died as warriors."))
             .on('pointerdown', () => {
                 this.noTouching(grave2);
@@ -397,7 +397,7 @@ class Graveyard extends AdventureScene {
         
         let count2 = 0;
         let grave3 = this.add.image(this.w*0.47, this.h*0.67, 'grave',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Need to dig around to get the bones."))
             .on('pointerdown', () => {
                 count2 += 1;
@@ -408,7 +408,7 @@ class Graveyard extends AdventureScene {
             });
 
         let grave4 = this.add.image(this.w*0.67, this.h*0.67, 'grave',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("The ghosts might resent you. Be careful."))
             .on('pointerdown', () => {
                 this.noTouching(bottles);
@@ -416,7 +416,7 @@ class Graveyard extends AdventureScene {
 
         let flower = this.add.image(this.w*0.57, this.h*0.86, 'flower',)
             .setScale(0.5)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Someone left it there for them."))
             .on('pointerdown', () => {
                 this.showMessage("You got the flower.");
@@ -425,14 +425,14 @@ class Graveyard extends AdventureScene {
             });
 
         let trees = this.add.image(this.w*0.22, this.h*0.24, 'trees',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Just some trees"))
             .on('pointerdown', () => {
                 this.noTouching(bottles);
             });
 
         let trees2 = this.add.image(this.w*0.6, this.h*0.25, 'trees2',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("How can they sleep with the lamp on?"))
             .on('pointerdown', () => {
                 this.noTouching(lamp);
@@ -459,7 +459,7 @@ class House extends AdventureScene {
     onEnter() {
         let back = this.add.text(this.w*0.943, this.h*0.9, "Back")
             .setFontSize(40)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
                 this.showMessage("Going to MachineRoom.");
                 this.gotoScene("machineroom");
@@ -467,7 +467,7 @@ class House extends AdventureScene {
 
         let bottledown = this.add.image(this.w*0.31, this.h*0.91, 'bottledown',)
             .setDepth(2)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Umm, why is it laying down?"))
             .on('pointerdown', () => {
                 this.showMessage("Nice! They keep their empty perfume bottles.");
@@ -476,7 +476,7 @@ class House extends AdventureScene {
             });
         
         let bottles = this.add.image(this.w*0.15, this.h*0.87, 'bottles',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Gotta take care of yourself."))
             .on('pointerdown', () => {
                 this.noTouching(bottles);
@@ -484,7 +484,7 @@ class House extends AdventureScene {
 
         let fan = this.add.image(this.w*0.16, this.h*0.29, 'fan',)
             .setScale(1.2)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("It’s so hot, you can’t sleep without air conditioning"))
             .on('pointerdown', () => {
                 this.showMessage("You got the fan.");
@@ -494,21 +494,21 @@ class House extends AdventureScene {
 
         let lamp = this.add.image(this.w*0.66, this.h*0.3, 'lamp',)
             .setScale(1.45)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("How can they sleep with the lamp on?"))
             .on('pointerdown', () => {
                 this.noTouching(lamp);
             });
 
         let tv = this.add.image(this.w*0.58, this.h*0.8, 'tv',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("They are watching a good room com."))
             .on('pointerdown', () => {
                 this.noTouching(tv);
             });
         
         let couch = this.add.image(this.w*0.41, this.h*0.26, 'couch',)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', () => this.showMessage("Be quick! They shouldn’t wake up."))
             .on('pointerdown', () => {
                 this.noTouching(couch);
@@ -573,7 +573,7 @@ class Intro extends Phaser.Scene {
         this.textObject.setDepth(2);
 
         this.add.rectangle(400, 950, 400, 100, 0x5A3A96)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerdown", () => {
                 this.count += 1;
                 if (this.count == 1) {
@@ -703,7 +703,7 @@ class GoodOutro extends Phaser.Scene {
         this.textObject.setDepth(2);
 
         this.add.rectangle(400, 950, 400, 100, 0x5A3A96)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on("pointerdown", () => {
                 this.count += 1;
                 if (this.count == 1) {
