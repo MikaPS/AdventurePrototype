@@ -60,7 +60,7 @@ class Lab extends AdventureScene {
             .setInteractive()
             .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
             .on('pointerdown', () => {
-                if (!this.hasItem("Potion")) {
+                if (!this.hasItem("Radioactive material")) {
                     this.gotoScene('startup');
                     this.itemAnimation(potion1);
                 }
@@ -71,9 +71,11 @@ class Lab extends AdventureScene {
             .setInteractive()
             .on('pointerover', () => this.showMessage("Be careful! This can have long lasting effects on your body."))
             .on('pointerdown', () => {
-                if (!this.hasItem("Potion")) {
+                if (!this.hasItem("Radioactive material")) {
                     this.gotoScene('startup');
                     this.itemAnimation(potion1);
+                } else {
+                    this.noTouching(potion1);
                 }
             });
 
@@ -251,7 +253,7 @@ class Maze extends AdventureScene {
 
     update() {
         if (this.countStart >= 1 && this.countEnd >= 1) {
-            this.gainItem('Potion');
+            this.gainItem('Radioactive material');
             this.gotoScene('lab');
         }
     }
@@ -289,7 +291,7 @@ class MachineRoom extends AdventureScene {
         let house = this.add.image(this.w*0.1, this.h*0.8, 'lamp',)
             .setScale(2)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("An empty bottle represents something that is gone. Fan since ghosts float around."))
+            .on('pointerover', () => this.showMessage("An *empty bottle* represents something that is gone. A *Fan* since ghosts float around."))
             .on('pointerdown', () => {
                 this.showMessage("Going to House.");
                 this.gotoScene("house");
@@ -298,7 +300,7 @@ class MachineRoom extends AdventureScene {
         let lab = this.add.image(this.w*0.34, this.h*0.79, 'potion',)
             .setScale(1.8)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("Unidentifiable item locked in a safe has to be important. Radioactive material to power the machine."))
+            .on('pointerover', () => this.showMessage("Unidentifiable item locked in a *safe* has to be important. *Radioactive material* to power the machine."))
             .on('pointerdown', () => {
                 this.showMessage("Going to Lab.");
                 this.gotoScene("lab");
@@ -307,7 +309,7 @@ class MachineRoom extends AdventureScene {
         let graveyard = this.add.image(this.w*0.62, this.h*0.78, 'grave',)
             .setScale(1.5)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("Bones to get the physical aspect of the ghosts. Old flower to show that others care about the ghosts."))
+            .on('pointerover', () => this.showMessage("*Bones* to get the physical aspect of the ghosts. *Old flower* to show that others care about the ghosts."))
             .on('pointerdown', () => {
                 this.showMessage("Going to Graveyard.");
                 this.gotoScene("graveyard");
@@ -524,23 +526,24 @@ class Intro extends Phaser.Scene {
     
     create() {
         // Walking down the street animation
-        let street = this.add.image(958, 230, 'street')
+        let street = this.add.image(-958, 230, 'street')
             .setScale(2.07);
         let street1 = this.add.image(-958, 230, 'street')
             .setScale(2.07);
 
         this.tweens.add({
                 targets: street,
-                x: 2950,
-                duration: 6200,
+                x: 2900,
+                duration: 10200,
                 ease: "Linear",
                 repeat: -1,
             });
 
         this.tweens.add({
                 targets: street1,
-                x: 958,
-                duration: 6000,
+                x: 2900,
+                duration: 10200,
+                delay: 5095,
                 ease: "Linear",
                 repeat: -1,
             });
@@ -569,7 +572,6 @@ class Intro extends Phaser.Scene {
             .setInteractive()
             .on("pointerdown", () => {
                 this.count += 1;
-                console.log(this.count);
                 if (this.count == 1) {
                     
                     this.text3 = this.add.text(50,600, "You are real, right?\nIf I can talk to you,\nyou have to exist")
@@ -604,8 +606,8 @@ class Intro extends Phaser.Scene {
                     this.tweens.add({
                             targets: [this.text],
                             alpha: 1,
-                            duration: 3000,
-                            delay: 3000,
+                            duration: 1500,
+                            delay: 1500,
                             ease: "Linear",
                     });
                     this.switchText(this.text1, this.text2, this.text3, this.text4);
@@ -622,7 +624,7 @@ class Intro extends Phaser.Scene {
         this.tweens.add({
                 targets: [text1, text2],
                 alpha: 0,
-                duration: 3000,
+                duration: 1500,
                 ease: "Linear",
                 onComplete: () => {
                     text1.destroy();
@@ -633,8 +635,8 @@ class Intro extends Phaser.Scene {
         this.tweens.add({
                 targets: [text3, text4],
                 alpha: 1,
-                duration: 3000,
-                delay: 3000,
+                duration: 1500,
+                delay: 1500,
                 ease: "Linear",
         });
     }
@@ -662,7 +664,7 @@ class GoodOutro extends Phaser.Scene {
         this.tweens.add({
                 targets: street,
                 x: -958,
-                duration: 7200,
+                duration: 10200,
                 ease: "Linear",
                 repeat: -1,
             });
@@ -670,8 +672,8 @@ class GoodOutro extends Phaser.Scene {
         this.tweens.add({
                 targets: street1,
                 x: -958,
-                duration: 7200,
-                delay: 3595,
+                duration: 10200,
+                delay: 5095,
                 ease: "Linear",
                 repeat: -1,
             });
@@ -700,7 +702,6 @@ class GoodOutro extends Phaser.Scene {
             .setInteractive()
             .on("pointerdown", () => {
                 this.count += 1;
-                console.log(this.count);
                 if (this.count == 1) {
                     
                     this.text3 = this.add.text(50,600, "Today, they will finally\nsee me as one of them.\nMy parents already\napologized for doubting\nme.")
@@ -722,6 +723,13 @@ class GoodOutro extends Phaser.Scene {
                     
                     this.switchText(this.text3, this.text4, this.text1, this.text2);
                 }
+                if (this.count >= 3) {
+                    this.cameras.main.fade(4000, 0, 0, 0);
+                    this.time.delayedCall(4000, () => {
+                        this.scene.start("intro");
+                    });
+                    
+                }
             });
 
     }
@@ -730,7 +738,7 @@ class GoodOutro extends Phaser.Scene {
         this.tweens.add({
                 targets: [text1, text2],
                 alpha: 0,
-                duration: 3000,
+                duration: 1500,
                 ease: "Linear",
                 onComplete: () => {
                     text1.destroy();
@@ -741,8 +749,8 @@ class GoodOutro extends Phaser.Scene {
         this.tweens.add({
                 targets: [text3, text4],
                 alpha: 1,
-                duration: 3000,
-                delay: 3000,
+                duration: 1500,
+                delay: 1500,
                 ease: "Linear",
         });
     }
@@ -760,8 +768,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [MachineRoom],
-    // scene: [Intro, MachineRoom, House, Lab, Startup, Maze, Graveyard, GoodOutro],
+    // scene: [GoodOutro, Intro],
+    scene: [Intro, MachineRoom, House, Lab, Startup, Maze, Graveyard, GoodOutro],
     title: "Adventure Game",
 });
 
