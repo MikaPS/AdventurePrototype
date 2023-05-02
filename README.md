@@ -2,7 +2,7 @@ A simple adventure game by Mika Peer Shalem based on a simple adventure game eng
 
 Code requirements:
 - **4+ scenes based on `AdventureScene`**: House, Lab, Graveyard, MachineRoom.
-- **2+ scenes *not* based on `AdventureScene`**: Intro, GoodIntro.
+- **2+ scenes *not* based on `AdventureScene`**: Intro, GoodOutro.
 - **2+ methods or other enhancement added to the adventure game engine to simplify my scenes**:
     - Enhancement 1: addDescription(). Explained each of the scenes and the goal of players in that scene.
     - Enhancement 2: noTouching(). Added the given animation to show that an item is not interactive.
